@@ -54,7 +54,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
   }
 </style>
 ```
-利用了 flex 布局下的 flex-grow: 1，让 .main 进行伸缩，占满剩余空间，利用 min-width 保证了整个容器的最小宽度。
+利用了 `flex` 布局下的 `flex-grow: 1`，让 `.main` 进行伸缩，占满剩余空间，利用 `min-width` 保证了整个容器的最小宽度。
 
 当然，这是最基本的自适应布局。对于现代布局，我们应该尽可能的考虑更多的场景。
 + 可伸缩的内容区块
@@ -66,7 +66,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 + ……
 
 ### 底部footer
-**内容高度 &lt; 视窗高度**，footer固定在视窗底部； **内容高度 &gt; 视窗高度**，footer 正常流排版。
+**内容高度 &lt; 视窗高度**，`footer` 固定在视窗底部； **内容高度 &gt; 视窗高度**，`footer` 正常流排版。
 
 实现方式：
 ```html
@@ -107,7 +107,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 ```
 
 ### 动态内容边界处理
-按钮文字：如果是动态的，就需要给定一个边界，即 padding。
+按钮文字：如果是动态的，就需要给定一个边界，即 `padding`。
 ```css
 .btn {
   ...
@@ -115,7 +115,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
   padding: 0 16px
 }
 ```
-<img alt="" src={useBaseUrl('img/210225/k3u1fbpfcp-zoom-1.png')} />
+<img alt="Padding边框示意图" src={useBaseUrl('img/210225/k3u1fbpfcp-zoom-1.png')} />
 
 ### 0内容展示
 页面经常会有列表搜索，列表展示。那么，既然存在有数据的正常情况，当然也会存在搜索不到结果或者列表无内容可展示的情形。
@@ -144,7 +144,7 @@ ul li img {
 ### 考虑屏幕 dpr 响应式
 正常情况下，图片的展示应该没有什么问题了。但是对于有图片可展示的情况下，我们还可以做的更好。
 
-在移动端或者一些高清的 PC 屏幕（苹果的 MAC Book），屏幕的 dpr 可能大于 1。这种时候，我们可能还需要考虑利用多倍图去适配不同 dpr 的屏幕。
+在移动端或者一些高清的 PC 屏幕（苹果的 MAC Book），屏幕的 `dpr` 可能大于 1。这种时候，我们可能还需要考虑利用多倍图去适配不同 `dpr` 的屏幕。
 
 正好，`<img>` 标签是有提供相应的属性 `srcset` 让我们进行操作的。
 ```html
@@ -188,4 +188,89 @@ img.error::after{
   /** 定位代码 **/
 }
 ```
-我们利用伪元素 before ，加载默认错误兜底图，利用伪元素 after，展示图片的 alt 信息：
+我们利用伪元素 `before` ，加载默认错误兜底图，利用伪元素 `after`，展示图片的 `alt` 信息：
+<img alt="图片错误demo" src={useBaseUrl('img/210225/21022816.png')} />
+
+[CodePen -- 图片错误demo](https://codepen.io/Aventury/pen/eYBVvrG)
+
+## 交互设计优化
+接下来一个大环节是关于一些交互的细节。对于交互设计，一些比较通用的准则：
++ Don’t make me think
++ 符合用户的习惯与预期
++ 操作便利
++ 做适当的提醒
++ 不强迫用户
+
+### 过渡与动画
+在我们的交互过程中，适当的增加过渡与动画，能够很好的让用户感知到页面的变化。譬如我们页面上随处可见 `loading` 效果，其实就是这样一种作用，让用户感知页面正在加载，或者正在处理某些事务。
+<img alt="加载动画GIF" src={useBaseUrl('img/210225/21022801.gif')} />
+
+### 滚动优化
+滚动也是操作网页中非常重要的一环。看看有哪些可以优化的点：
+
+**滚动平滑：使用 `scroll-behavior: smooth` 让滚动丝滑**，使用 `scroll-behavior: smooth`，可以让滚动框实现平稳的滚动，而不是突兀的跳动。看看效果，假设如下结构：
+```html
+<div class="g-container">
+  <nav>
+    <a href="#1">1</a>
+    <a href="#2">2</a>
+    <a href="#3">3</a>
+  </nav>
+  <div class="scrolling-box">
+    <section id="1">First section</section>
+    <section id="2">Second section</section>
+    <section id="3">Third section</section>
+  </div>
+</div>
+```
+
+### 控制滚动层级，避免页面大量重排
+控制滚动层级的意思是**尽量让需要进行 CSS 动画（可以是元素的动画，也可以是容器的滚动）的元素的 `z-index` 保持在页面最上方，避免浏览器创建不必要的图形层（GraphicsLayer），能够很好的提升渲染性能**。
+这一点怎么理解呢，一个元素触发创建一个 Graphics Layer 层的其中一个因素是：
+
+* 元素有一个 `z-index` 较低且包含一个复合层的兄弟元素
+
+根据上述这点，我们对滚动性能进行优化的时候，需要注意两点：
+1. 通过生成独立的 `GraphicsLayer`，利用 `GPU` 加速，提升滚动的性能
+2. 如果本身滚动没有性能问题，不需要独立的 `GraphicsLayer`，也要注意滚动容器的层级，避免因为层级过高而被其他创建了 `GraphicsLayer` 的元素合并，被动的生成一个 `Graphics Layer` ，影响页面整体的渲染性能。
+
+[你所不知道的CSS动画技巧与细节](https://github.com/chokcoco/iCSS/issues/27)
+
+### 点击交互优化
+在用户点击交互方面，也有一些有意思的小细节。对于不同的内容，最好给与不同的 `cursor` 样式，CSS 原生提供非常多种常用的手势。在不同的场景使用不同的鼠标手势，**符合用户的习惯与预期**，可以很好的提升用户的交互体验。
+
+首先对于按钮，就至少会有 3 种不同的 `cursor`，分别是可点击，不可点击，等待中：
+```css
+.btn{
+  cursor: pointer;    /* 可点击 */
+  cursor: not-allowed;    /* 不可点击 */
+  cursor: wait;    /* loading */
+}
+```
+
+<img alt="按钮手势提示" src={useBaseUrl('img/210225/21022802.png')} />
+
+除此之外，还有一些常见的，对于一些可输入的 `Input` 框，使用 `cursor: text`，对于提示 `Tips` 类使用 `cursor: help`，放大缩小图片 `zoom-in、zoom-out` 等等：
+
+<img alt="输入框手势提示" src={useBaseUrl('img/210225/21022803.png')} />
+
+[更多详细手势图标，请参考MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor)
+
+### 点击区域优化 -- 伪元素扩大点击区域
+按钮是我们网页设计中十分重要的一环，而按钮的设计也与用户体验息息相关。考虑这样一个场景，在摇晃的车厢上或者是单手操作着屏幕，有的时候一个按钮，死活也点不到。
+让用户更容易的点击到按钮无疑能很好的增加用户体验及可提升页面的访问性，尤其是在移动端，按钮通常都很小，但是受限于设计稿或者整体 UI 风格，我们不能直接去改变按钮元素的高宽。那么这个时候有什么办法在不改变按钮原本大小的情况下去增加他的点击热区呢？
+这里，伪元素也是可以代表其宿主元素来响应的鼠标交互事件的。借助伪元素可以轻松帮我们实现，我们可以这样写：
+```css
+.btn::befoer{
+  content:"";
+  position:absolute;
+  top:-10px;
+  right:-10px;
+  bottom:-10px;
+  left:-10px;
+}
+```
+
+### 快速选择优化 -- user-select: all
+操作系统或者浏览器通常会提供一些快速选取文本的功能，看看下面的示意图：
+<img alt="快速选择" src={useBaseUrl('img/210225/21022804.gif')} />
