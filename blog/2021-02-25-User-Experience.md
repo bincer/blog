@@ -4,6 +4,7 @@ title: Web 用户体验设计提升
 author: Bincer
 description: 所谓的用户体验设计，其实是一个比较虚的概念，是秉承着以用户为中心的思想的一种设计手段，以用户需求为目标而进行的设计。
 image: /static/img/210225/21022501.png
+author_image_url: /static/img/headImg.gif
 tags: [exprience]
 ---
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -20,15 +21,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 通常对于PC端官网类型而言，大多数设计稿中间的宽度为1200px，两边留白自适应即可。
 
 ```html
-<div class="container">
-
-  <!-- ...... -->
-</div>
+<div class="container"> <!-- ...... --> </div>
 <style>
-  .container{
-    width: 1200px;
-    margin: 0 auto;
-  }
+  .container{ width: 1200px; margin: 0 auto; }
 </style>
 ```
 
@@ -234,7 +229,11 @@ img.error::after{
 1. 通过生成独立的 `GraphicsLayer`，利用 `GPU` 加速，提升滚动的性能
 2. 如果本身滚动没有性能问题，不需要独立的 `GraphicsLayer`，也要注意滚动容器的层级，避免因为层级过高而被其他创建了 `GraphicsLayer` 的元素合并，被动的生成一个 `Graphics Layer` ，影响页面整体的渲染性能。
 
+<<<<<<< HEAD
 [你所不知道的CSS动画技巧与细节](https://github.com/chokcoco/iCSS/issues/27)
+=======
+参考资料连接：[你所不知道的CSS动画技巧与细节](https://github.com/chokcoco/iCSS/issues/27)
+>>>>>>> c376d53b49e7085268c87daf505a396e5379fe9a
 
 ### 点击交互优化
 在用户点击交互方面，也有一些有意思的小细节。对于不同的内容，最好给与不同的 `cursor` 样式，CSS 原生提供非常多种常用的手势。在不同的场景使用不同的鼠标手势，**符合用户的习惯与预期**，可以很好的提升用户的交互体验。
@@ -254,9 +253,9 @@ img.error::after{
 
 <img alt="输入框手势提示" src={useBaseUrl('img/210225/21022803.png')} />
 
-[更多详细手势图标，请参考MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor)
+更多详细手势图标：[请参考MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor)
 
-### 点击区域优化 -- 伪元素扩大点击区域
+### 点击区域优化
 按钮是我们网页设计中十分重要的一环，而按钮的设计也与用户体验息息相关。考虑这样一个场景，在摇晃的车厢上或者是单手操作着屏幕，有的时候一个按钮，死活也点不到。
 让用户更容易的点击到按钮无疑能很好的增加用户体验及可提升页面的访问性，尤其是在移动端，按钮通常都很小，但是受限于设计稿或者整体 UI 风格，我们不能直接去改变按钮元素的高宽。那么这个时候有什么办法在不改变按钮原本大小的情况下去增加他的点击热区呢？
 这里，伪元素也是可以代表其宿主元素来响应的鼠标交互事件的。借助伪元素可以轻松帮我们实现，我们可以这样写：
@@ -271,6 +270,102 @@ img.error::after{
 }
 ```
 
+<<<<<<< HEAD
 ### 快速选择优化 -- user-select: all
 操作系统或者浏览器通常会提供一些快速选取文本的功能，看看下面的示意图：
 <img alt="快速选择" src={useBaseUrl('img/210225/21022804.gif')} />
+=======
+### 快速选择优化
+操作系统或者浏览器通常会提供一些快速选取文本的功能，看看下面的示意图：
+<img alt="快速选择" src={useBaseUrl('img/210225/21022804.gif')} />
+
+[CodePen -- CSS select all demo](https://codepen.io/Aventury/pen/xxRWabg)
+
+### 添加禁止选择
+有快速选择，也就会有它的对立面 -- 禁止选择。对于一些可能频繁操作的按钮，可能出现如下尴尬的场景：
++ 文本按钮的快速点击，触发了浏览器的双击快速选择，导致文本被选中：
++ 翻页按钮的快速点击，触发了浏览器的双击快速选择：
+对于这种场景，我们需要把不可被选中元素设置为不可被选中，利用 CSS 可以快速的实现这一点：
+```css
+{
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+```
+
+### 跳转优化
+现阶段，单页应用（Single Page Application）的应用非常广泛，`Vue 、React` 等框架大行其道。但是一些常见的写法，也容易衍生一些小问题。
+譬如，点击按钮、文本进行路由跳转。譬如，经常会出现这种代码：
+```
+<template>
+  ...
+  <button @click="gotoDetail"> Detail </button>
+  ...
+<template>
+...
+gotoDetail() {
+  this.$router.push({ name: 'xxxxx' });
+}
+```
+大致逻辑就是给按钮添加一个事件，点击之后，跳转到另外一个路由。当然，本身这个功能是没有任何问题的，但是没有考虑到用户实际使用的场景。
+
+实际使用的时候，由于是一个页面跳转，很多时候，用户希望能够保留当前页面的内容，同时打开一个新的窗口，这个时候，他会尝试下的鼠标右键，选择在新标签页中打开页面，遗憾的是，上述的写法是不支持鼠标右键打开新页面的。
+
+原因在于浏览器是通过读取 `<a>` 标签的 `href` 属性，来展示类似在新标签页中打开页面这种选项，对于上述的写法，浏览器是无法识别它是一个可以跳转的链接。简单的示意图如下：
+
+<img alt="A标签跳转示意图" src={useBaseUrl('img/210225/21030102.png')} />
+
+所以，对于所有路由跳转按钮，建议都使用 `<a>` 标签，并且内置 `href` 属性，填写跳转的路由地址。实际渲染出来的 DOM 可能是需要类似这样：
+```html
+<a href="/xx/detail">Detail</a>
+```
+
+### 易用性
+易用性也是交互设计中需要考虑的一个非常重要的环节，能做的有非常多。简单的罗列一下：
++ 注意界面元素的一致性，降低用户学习成本
++ 延续用户日常的使用习惯，而不是重新创造
++ 给下拉框增加一些预设值，降低用户填写成本
++ 同类的操作合并在一起，降低用户的认知成本
++ 任何操作之后都要给出反馈，让用户知道操作已经生效
+
+### 先探索，后表态
+这一点非常的有意思，什么叫先探索后表态呢？就是我们不要一上来就强迫用户去做一些事情，譬如登录。想一想一些常用网站的例子：
++ 类似虎牙、Bilibili 等视频网站，可以先观看体验，一定观看时间后才会要求登录（登录享受蓝光）
++ 电商网站，只有到付款的时候，才需要登录
+
+更多详细文章请查看：[75 ideas based on intuition](https://goodui.org/)
+
+### 字体优化
+字体的选择与使用其实是非常有讲究的。如果网站没有强制必须使用某些字体。最新的规范建议我们更多的去使用系统默认字体。也就是：[CSS Fonts Module Level 4 - Generic font families](https://www.w3.org/TR/css-fonts-4/#generic-font-families)中新增的 `font-family: system-ui` 关键字。
+
+`font-family: system-ui` 能够自动选择本操作系统下的默认系统字体。默认使用特定操作系统的系统字体可以提高性能，因为浏览器或者 `webview` 不必去下载任何字体文件，而是使用已有的字体文件。举两个例子，天猫的字体定义与 Github 的字体定义：
++ 天猫：`font-family: "PingFang SC",miui,system-ui,-apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,sans-serif;`
++ Github：`font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;`
+
+简单而言，它们总体遵循了这样一个基本原则：
+1. 尽量使用系统默认字体
+2. 兼顾中西，西文在前，中文在后
+3. 兼顾多操作系统
+4. 兼顾旧操作系统，以字体族系列 `serif` 和 `sans-serif` 结尾
+
+## 可访问性（A11Y）
+### 色彩对比度
+颜色对比度，简单地说，描述就是两种颜色在亮度（Brightness）上的差别。运用到我们的页面上，大多数的情况就是背景色（background-color）与内容颜色（color）的对比差异。所有重要内容的色彩对比度需要达到 4.5:1 或以上（字号大于18号时达到 3:1 或以上），才算拥有较好的可读性。
+
+**检查色彩对比度的工具**：Chrome 浏览器从很早开始，就已经支持检查元素的色彩对比度了。
+<img alt="色彩对比" src={useBaseUrl('img/210225/21030201.png')} />
+
+可以看到，绿底白字按钮的色彩对比度是没有达到标准的，也被用黄色的叹号标识了出来。
+
+### 焦点响应
+类似百度、谷歌的翻译，进入页面后会默认让输入框获得焦点：
+<img alt="百度翻译" src={useBaseUrl('img/210225/21030202.png')} />
+
+并非所有的有输入框的页面，都需要进入页面后进行聚焦，但是焦点能够让用户非常明确的知道，当前自己在哪，需要做些什么。尤其是对于无法操作鼠标的用户。
+
+页面上可以聚焦的元素，称为可聚焦元素，获得焦点的元素，则会触发该元素的 focus 事件，对应的，也就会触发该元素的 :focus 伪类。
+浏览器通常会使用元素的 :focus 伪类，给元素添加一层边框，告诉用户，当前的获焦元素在哪里。
+
+我们可以通过键盘的 Tab 键，进行焦点的切换，而获焦元素则可以通过元素的 :focus 伪类的样式，告诉用户当前焦点位置。
+>>>>>>> c376d53b49e7085268c87daf505a396e5379fe9a
