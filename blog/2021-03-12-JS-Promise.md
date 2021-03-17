@@ -11,15 +11,15 @@ tags: [Promise]
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 <img alt="promise 插图" src={useBaseUrl('img/210312/21031201.png')} />
-Promise 是 ES6 中的特性，现在很多前端框架像 AngularJS，Vue 等在 HTTP 请求之后都是返回的 Promise 处理，因此 Promise 是必须要掌握的一个知识点。
+Promise 是异步编程的一种解决方案，比传统的解决方案——回调函数和事件——更合理和更强大。Promise 是 ES6 中的特性，现在很多前端框架像 AngularJS，Vue 等在 HTTP 请求之后都是返回的 Promise 处理，因此 Promise 是必须要掌握的一个知识点。
 
 <!--truncate-->
 
 ## Promise 定义
 
-Promise 是异步编程的一种解决方案，比传统的解决方案——回调函数和事件——更合理和更强大。
-
 所谓 Promise，简单说就是一个容器，里面保存着某个未来才会结束的事件（通常是一个异步操作）的结果。从语法上说，Promise 是一个对象，从它可以获取异步操作的消息。Promise 提供统一的 API，各种异步操作都可以用同样的方法进行处理。
+
+**Promise 新建后就会立即执行。**
 
 ### 三种状态
 
@@ -37,6 +37,13 @@ Promise 是异步编程的一种解决方案，比传统的解决方案——回
 1. 无法取消 `Promise` ，一旦新建它就会立即执行，无法中途取消。
 2. 如果不设置回调函数，`Promise` 内部抛出的错误，不会反应到外部。
 3. 当处于 `pending` 状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
+
+## Promise.prototype.then()
+`Promise` 实例具有 `then` 方法，也就是说，`then` 方法是定义在原型对象 `Promise.prototype` 上的。它的作用是为 `Promise` 实例添加状态改变时的回调函数。`then` 方法的第一个参数是 `resolved` 状态的回调函数，第二个参数是 `rejected` 状态的回调函数，它们都是可选的。`then` 方法返回的是一个新的 `Promise` 实例。
+
+## Promise.prototype.catch()
+`Promise.prototype.catch()` 方法是 `.then(null, rejection)` 或 `.then(undefined, rejection)` 的别名，用于指定发生错误时的回调函数。
+
 
 ## 练习题
 
