@@ -16,13 +16,13 @@ module.exports = {
         src: 'img/logo.svg',
       },
       items: [
-        /* {
+        {
           to: 'docs/',
           activeBasePath: 'docs',
-          label: 'Docs',
+          label: 'Front-end',
           position: 'left',
-        }, */
-        {to: 'blog', label: 'Front-end', position: 'left'},
+        },
+        {to: 'blog', label: 'blog', position: 'left'},
         {
           href: 'https://github.com/bincer/blog',
           label: 'GitHub',
@@ -75,8 +75,7 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl:
-            'https://github.com/bincer/docusaurus/edit/master/website/',
+          // editUrl: 'https://github.com/bincer/docusaurus/edit/master/website/',
         },
         blog: {
           // showReadingTime: true,

@@ -1,16 +1,13 @@
 ---
-slug: JS-Promise
-title: Promise总结与练习
-author: Bincer
-description: Promise是ES6中的特性，现在很多前端框架像AngularJS，Vue等在HTTP请求之后都是返回的Promise处理，因此Promise是必须要掌握的一个知识点。
-image: /static/img/210312/21031201.png
-author_image_url: /static/img/headImg1.gif
-tags: [Promise]
+id: promise
+title: Promise 对象知识总结及练习题
+sidebar_label: Promise 对象
+slug: /
 ---
-
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 <img alt="promise 插图" src={useBaseUrl('img/210312/21031201.png')} />
+
 Promise 是异步编程的一种解决方案，比传统的解决方案——回调函数和事件——更合理和更强大。Promise 是 ES6 中的特性，现在很多前端框架像 AngularJS，Vue 等在 HTTP 请求之后都是返回的 Promise 处理，因此 Promise 是必须要掌握的一个知识点。
 
 <!--truncate-->
@@ -52,34 +49,18 @@ Promise 是异步编程的一种解决方案，比传统的解决方案——回
 > 红灯3秒亮一次，绿灯1秒亮一次，黄灯2秒亮一次；如何使用Promise让三个灯不断交替重复亮灯？（海康威视笔试题）
 
 ```js
-function red() {
-  console.log('red');
-}
-
-function green() {
-  console.log('green');
-}
-
-function yellow() {
-  console.log('yellow');
-}
+const red = () => console.log('red');
+const green = () => console.log('green');
+const yellow = () => console.log('yellow');
 ```
 
 **解析：** 
 红灯亮起时，承诺2s秒后亮绿灯，绿灯亮起时承诺1s后亮黄灯，黄灯亮起时，承诺3s后亮红灯......这显然是一个Promise链式调用。我们需要将我们的每一个亮灯动作写在then()方法中，同时返回一个新的Promise，并将其状态由pending设置为fulfilled，允许下一盏灯亮起。
 
 ```js
-function red() {
-  conslo.log('red');
-}
-
-function green(){
-  console.log('green');
-}
-
-function yellow(){
-  console.log('yellow');
-}
+const red = () => console.log('red');
+const green = () => console.log('green');
+const yellow = () => console.log('yellow');
 
 let myLight = (timer, cb) => {
   return new Promise((resolve) => {
@@ -104,4 +85,3 @@ let myStep = () => {
 
 myStep();
 ```
-
