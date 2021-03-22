@@ -5,7 +5,7 @@ module.exports = {
       label: 'JavaScript',
       collapsed: true,
       items: [
-        'JS/promise', 'JS/runtime'
+        'JS/primitive', 'JS/runtime', 'JS/promise'
       ],
     },
     {
