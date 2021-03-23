@@ -103,11 +103,11 @@ foo();
 
 当引擎开始执行这个代码时，它首先调用函数“foo”。然而，这个函数是递归的，并且开始调用自己而没有任何终止条件。所以在执行的每个步骤中，同一个函数会一次又一次地添加到调用堆栈中。它看起来像这样：
 
-<img alt="stack trace" src={useBaseUrl('img/210319/104326_4B9u_2896879.png')} />
+<img alt="loop" src={useBaseUrl('img/210319/104326_4B9u_2896879.png')} />
 
 然而，在某些情况下，调用堆栈中函数调用的数量超出了调用堆栈的实际大小，浏览器通过抛出一个错误（如下所示）来决定采取行动：
 
-<img alt="stack trace" src={useBaseUrl('img/210319/104350_JCtB_2896879.png')} />
+<img alt="max stack" src={useBaseUrl('img/210319/104350_JCtB_2896879.png')} />
 
 在单线程上运行代码可能非常容易，因为你不必处理多线程环境中出现的复杂场景，例如死锁。但是在单线程上运行也是非常有限的。
 
@@ -115,12 +115,12 @@ foo();
 
 而且这并不是唯一的问题。一旦你的浏览器开始在 Call Stack 中处理过多的任务，它可能会停止响应相当长的时间。大多数浏览器会通过触发错误来采取行动，询问你是否要终止网页。
 
-<img alt="stack trace" src={useBaseUrl('img/210319/104412_G1jc_2896879.png')} />
+<img alt="time out Image" src={useBaseUrl('img/210319/104412_G1jc_2896879.png')} />
 
 ## Event Loop 事件循环
 JavaScript是一个单线程，它执行的所有代码都放在下面这个Call Stack里面，当Call Stack执行完毕之后，就会再右侧的队列里面找任务，如果有微任务，就会先执行微任务，再去执行宏任务。
 
-<img alt="stack trace" src={useBaseUrl('img/210319/e22d7cc116_r.jpg')} />
+<img alt="event loop" src={useBaseUrl('img/210319/e22d7cc116_r.jpg')} />
 
 事件循环：就是同步任务进入主线程，异步任务加入到任务队列中。等主线程的任务执行完就去执行任务队列中的任务，这个过程会不断重复。
 
