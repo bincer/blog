@@ -2,6 +2,7 @@
 id: primitive
 title: 解读 JS 类型、引用及精度问题
 sidebar_label: JavaScript 之原始数据
+slug: /
 ---
 import useBaseUrl from '@docusaurus/useBaseUrl';
 

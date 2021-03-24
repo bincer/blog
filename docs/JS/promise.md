@@ -2,7 +2,6 @@
 id: promise
 title: Promise 对象知识总结及练习题
 sidebar_label: Promise 对象
-slug: /
 ---
 import useBaseUrl from '@docusaurus/useBaseUrl';
 

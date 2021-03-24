@@ -1,7 +1,7 @@
 ---
 id: typeChange
 title: JS 类型转换
-sidebar_label: 类型转换
+sidebar_label: JavaScript 类型转换
 ---
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
