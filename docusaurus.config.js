@@ -19,10 +19,10 @@ module.exports = {
         {
           to: 'docs/',
           activeBasePath: 'docs',
-          label: 'Front-end',
+          label: '知识库',
           position: 'left',
         },
-        {to: 'blog', label: 'blog', position: 'left'},
+        {to: 'blog', label: '博客', position: 'left'},
         {
           href: 'https://github.com/bincer/blog',
           label: 'GitHub',
