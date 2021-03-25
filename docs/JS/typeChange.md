@@ -79,3 +79,7 @@ ToPrimitive([]) == 0
 // 根据第 6 条得出
 0 == 0 // -> true
 ```
+
+## 扩展阅读
+[JavaScript 中的相等性判断 - 非严格相等(==)](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Equality_comparisons_and_sameness#%E9%9D%9E%E4%B8%A5%E6%A0%BC%E7%9B%B8%E7%AD%89)
+[js中==和===的区别](https://coolcao.com/2016/08/06/js%E4%B8%AD-%E5%92%8C-%E7%9A%84%E5%8C%BA%E5%88%AB/)
