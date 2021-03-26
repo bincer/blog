@@ -31,7 +31,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Algorithm',
-      items: [],
+      items: ['Algorithm/links'],
     }
   ]
 };
