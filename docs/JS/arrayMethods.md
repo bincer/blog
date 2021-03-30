@@ -1,8 +1,32 @@
 ---
 id: arrayMethods
-title: JS 数组方法详解
-sidebar_label: JS 数组方法详解
+title: 数组方法详解
+sidebar_label: 数组方法详解
 ---
+
+## Array.prototype.concat()
+`concat()` 方法用于合并两个或多个数组。此方法不会更改现有数组，而是返回一个新数组。
+
+```javascript
+  /*
+  * @param valueN : 数组和/或值，将被合并到一个新的数组中。如果省略了所有 valueN 参数，则 concat 会返回调用此方法的现存数组的一个浅拷贝。详情请参阅下文描述。
+  * @return : 新的 Array 实例。
+  */
+  var new_array = old_array.concat(value1[, value2[, ...[, valueN]]])
+
+  
+  // Demo: 连接两个数组
+  var alpha = ['a', 'b', 'c'];
+  var numeric = [1, 2, 3];
+  alpha.concat(numeric); // ['a', 'b', 'c', 1, 2, 3]
+
+  // Demo: 连接三个数组
+  var num1 = [1, 2, 3],
+      num2 = [4, 5, 6],
+      num3 = [7, 8, 9];
+  var nums = num1.concat(num2, num3);
+  console.log(nums); // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+```
 
 ## Array.prototype.forEach()
 `forEach()` 方法对数组的每个元素执行一次给定的函数。
@@ -17,23 +41,21 @@ sidebar_label: JS 数组方法详解
   * @return undefined
   */
   arr.forEach(callback(currentValue [, index [, array]])[, thisArg])
+
+  
+  // Demo: 遍历输出
+  const arr = ['a', 'b', 'c'];
+  arr.forEach(el => console.log(el));
+  // "a"
+  // "b"
+  // "c"
 ```
 
-DEMO:
-```javascript
-const array1 = ['a', 'b', 'c'];
+:::note
+  除了抛出异常以外，没有办法中止或跳出 forEach() 循环。
+:::
 
-array1.forEach(element => console.log(element));
-
-// expected output: "a"
-// expected output: "b"
-// expected output: "c"
-```
-
-### 中止 forEach
-除了抛出异常以外，没有办法中止或跳出 forEach() 循环。
-
-### 使用 thisArg 案例
+**使用 thisArg 案例**:
 ```javascript
 function Counter() {
   this.sum = 0;
@@ -49,10 +71,8 @@ Counter.prototype.add = function(array) {
 
 const obj = new Counter();
 obj.add([2, 5, 9]);
-obj.count;
-// 3 === (1 + 1 + 1)
-obj.sum;
-// 16 === (2 + 5 + 9)
+obj.count; // 3 === (1 + 1 + 1)
+obj.sum;   // 16 === (2 + 5 + 9)
 ```
 
 因为 `thisArg` 参数（`this`）传给了 `forEach()`，每次调用时，它都被传给 `callback` 函数，作为它的 `this` 值。
@@ -60,183 +80,6 @@ obj.sum;
 :::caution
 如果使用箭头函数表达式来传入函数参数， thisArg 参数会被忽略，因为箭头函数在词法上绑定了 this 值。
 :::
-
-### 扁平化数组
-将嵌套多层的数组“拉平”，变成一维的数组的方式，实现方式很多，挑其中几个最优方式即可。
-
-#### (1) Array​.prototype​.flat()
-`flat()` 方法会按照一个可指定的深度递归遍历数组，并将所有元素与遍历到的子数组中的元素合并为一个新数组返回。
-
-```javascript
-/*
-* @param depth :[可选]指定要提取嵌套数组的结构深度，默认值为 1。
-*/
-var newArray = arr.flat([depth]);
-```
-
-DEMO:
-```javascript
-const arr1 = [0, 1, 2, [3, 4]];
-
-console.log(arr1.flat());
-// expected output: [0, 1, 2, 3, 4]
-
-const arr2 = [0, 1, 2, [[[3, 4]]]];
-
-console.log(arr2.flat(2));
-// expected output: [0, 1, 2, [3, 4]]
-
-//使用 Infinity，可展开任意深度的嵌套数组
-var arr4 = [1, 2, [3, 4, [5, 6, [7, 8, [9, 10]]]]];
-arr4.flat(Infinity);
-// [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-```
-
-#### (2) forEach 递归调用
-```javascript
-/**
- * Flattens passed array in one dimensional array
- *
- * @params {array} arr
- * @returns {array}
- */
-function flatten(arr) {
-  const result = [];
-
-  arr.forEach((i) => {
-    if (Array.isArray(i))
-      result.push(...flatten(i));
-    else
-      result.push(i);
-  })
-
-  return result;
-}
-
-// Usage
-const problem = [1, 2, 3, [4, 5, [6, 7], 8, 9]];
-flatten(problem); // [1, 2, 3, 4, 5, 6, 7, 8, 9]
-```
-
-#### (3) 使用 reduce 与 concat
-```javascript
-var arr = [1, 2, [3, 4]];
-
-// 展开一层数组 arr.flat()
-arr.reduce((acc, val) => acc.concat(val), []); // [1, 2, 3, 4]
-
-// 使用扩展运算符 ...
-const flattened = arr => [].concat(...arr); // [1, 2, 3, 4]
-```
-
-#### (4) reduce + concat + isArray + recursivity
-```javascript
-// 使用 reduce、concat 和递归展开无限多层嵌套的数组
-var arr1 = [1,2,3,[1,2,3,4, [2,3,4]]];
-
-function flatDeep(arr, d = 1) {
-   return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
-                : arr.slice();
-};
-
-flatDeep(arr1, Infinity);
-// [1, 2, 3, 1, 2, 3, 4, 2, 3, 4]
-```
-
-#### (5) forEach + isArray + push + recursivity
-```javascript
-// forEach 遍历数组会自动跳过空元素
-const eachFlat = (arr = [], depth = 1) => {
-  const result = []; // 缓存递归结果
-  // 开始递归
-  (function flat(arr, depth) {
-    // forEach 会自动去除数组空位
-    arr.forEach((item) => {
-      // 控制递归深度
-      if (Array.isArray(item) && depth > 0) {
-        // 递归数组
-        flat(item, depth - 1)
-      } else {
-        // 缓存元素
-        result.push(item)
-      }
-    })
-  })(arr, depth)
-  // 返回递归结果
-  return result;
-}
-
-// for of 循环不能去除数组空位，需要手动去除
-const forFlat = (arr = [], depth = 1) => {
-  const result = [];
-  (function flat(arr, depth) {
-    for (let item of arr) {
-      if (Array.isArray(item) && depth > 0) {
-        flat(item, depth - 1)
-      } else {
-        // 去除空元素，添加非undefined元素
-        item !== void 0 && result.push(item);
-      }
-    }
-  })(arr, depth)
-  return result;
-}
-```
-
-#### (6) 使用堆栈stack
-```javascript
-// 无递归数组扁平化，使用堆栈
-// 注意：深度的控制比较低效，因为需要检查每一个值的深度
-// 也可能在 shift / unshift 上进行 w/o 反转，但是末端的数组 OPs 更快
-var arr1 = [1,2,3,[1,2,3,4, [2,3,4]]];
-function flatten(input) {
-  const stack = [...input];
-  const res = [];
-  while (stack.length) {
-    // 使用 pop 从 stack 中取出并移除值
-    const next = stack.pop();
-    if (Array.isArray(next)) {
-      // 使用 push 送回内层数组中的元素，不会改动原始输入
-      stack.push(...next);
-    } else {
-      res.push(next);
-    }
-  }
-  // 反转恢复原数组的顺序
-  return res.reverse();
-}
-flatten(arr1);// [1, 2, 3, 1, 2, 3, 4, 2, 3, 4]
-
-
-// 递归版本的反嵌套
-function flatten(array) {
-  var flattend = [];
-  (function flat(array) {
-    array.forEach(function(el) {
-      if (Array.isArray(el)) flat(el);
-      else flattend.push(el);
-    });
-  })(array);
-  return flattend;
-}
-```
-
-#### (7) Use Generator function
-```javascript
-function* flatten(array) {
-    for (const item of array) {
-        if (Array.isArray(item)) {
-            yield* flatten(item);
-        } else {
-            yield item;
-        }
-    }
-}
-
-var arr = [1, 2, [3, 4, [5, 6]]];
-const flattened = [...flatten(arr)];
-// [1, 2, 3, 4, 5, 6]
-```
 
 ## Array.prototype.map()
 `map()` 方法创建一个新数组，其结果是该数组中的每个元素是调用一次提供的函数后的返回值。
@@ -253,20 +96,17 @@ const flattened = [...flatten(arr)];
 var new_array = arr.map(function callback(currentValue[, index[, array]]) {
  // Return element for new_array 
 }[, thisArg]);
-```
 
-DEMO: 
-```javascript
-// 下面的代码创建了一个新数组，值为原数组中对应数字的平方根。
+
+// Demo: 创建了一个新数组，值为原数组中对应数字的平方根。
 let numbers = [1, 4, 9];
 let roots = numbers.map(Math.sqrt);  // roots的值为[1, 2, 3], numbers的值仍为[1, 4, 9]
 ```
 
 ### map() 面试题
 ```javascript
-["1", "2", "3"].map(parseInt); // 我们期望输出 [1, 2, 3], 而实际结果是 [1, NaN, NaN].
-
-['10', '10', '10'].map(parseInt); // 输出结果为 [10, NaN, 2].
+["1", "2", "3"].map(parseInt); // 我们期望输出 [1, 2, 3], 而实际结果是 [1, NaN, NaN]
+['10', '10', '10'].map(parseInt); // 输出结果为 [10, NaN, 2]
 ```
 
 parseInt 经常被带着一个参数使用, 但是这里接受两个。第一个参数是一个表达式而第二个是callback function的基, Array.prototype.map 传递3个参数:
@@ -442,3 +282,60 @@ arr.lastIndexOf(searchElement[, fromIndex])
 */
 arr.reduce(callback(accumulator, currentValue[, index[, array]])[, initialValue])
 ```
+
+DEMO: 
+```javascript
+// 将二维数组转化为一维
+var flattened = [[0, 1], [2, 3], [4, 5]].reduce(
+ ( acc, cur ) => acc.concat(cur),
+ []
+);
+// flattened is [0, 1, 2, 3, 4, 5]
+
+
+// 数组去重
+let arr = [1,2,1,2,3,5,4,5,3,4,4,4,4];
+let result = arr.sort().reduce((init, current) => {
+    if(init.length === 0 || init[init.length-1] !== current) {
+        init.push(current);
+    }
+    return init;
+}, []);
+console.log(result); // [1, 2, 3, 4, 5]
+```
+
+## Array.prototype.reduceRight()
+`reduceRight()` 方法接受一个函数作为累加器（`accumulator`）和数组的每个值（从右到左）将其减少为单个值。
+
+```javascript
+/*
+* @param callback: 一个回调函数，用于操作数组中的每个元素，它可接受四个参数：
+* --------------- accumulator：累加器：上一次调用回调函数时，回调函数返回的值。首次调用回调函数时，如果 initialValue 存在，累加器即为 initialValue，否则须为数组中的最后一个元素（详见下方 initialValue 处相关说明）。
+* --------------- currentValue: 当前元素：当前被处理的元素。
+* --------------- index: [可选] 数组中正在处理的当前元素的索引。 如果提供了initialValue，则起始索引号为0，否则从索引1起始。
+* --------------- array: [可选] 数组中当前被处理的元素的索引。
+* @param initialValue: [可选] 首次调用 callback 函数时，累加器 accumulator 的值。如果未提供该初始值，则将使用数组中的最后一个元素，并跳过该元素。如果不给出初始值，则需保证数组不为空。
+* @return any: 执行之后的返回值。
+*/
+arr.reduceRight(callback(accumulator, currentValue[, index[, array]])[, initialValue])
+```
+
+DEMO: 
+```javascript
+// 求一个数组中所有值的和
+var sum = [0, 1, 2, 3].reduceRight(function(a, b) {
+  return a + b;
+});
+// sum is 6
+
+
+// 扁平化（flatten）一个二维数组
+var flattened = [[0, 1], [2, 3], [4, 5]].reduceRight(function(a, b) {
+    return a.concat(b);
+}, []);
+// flattened is [4, 5, 2, 3, 0, 1]
+```
+
+## 扩展阅读
++ [扁平化数组 - 方法与思路整理](./flattened)
++ [一张图看懂JavaScript中数组的迭代方法](/img/210330/953f456d7290649.png)

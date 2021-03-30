@@ -1,7 +1,7 @@
 ---
 id: runtime
 title: 解读 JS 之引擎、堆栈调用和事件循环
-sidebar_label: JavaScript 之引擎
+sidebar_label: 引擎、堆栈与事件循环
 ---
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
