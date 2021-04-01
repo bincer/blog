@@ -7,6 +7,7 @@ module.exports = {
       items: [
         'JS/primitive',
         'JS/typeChange',
+        'JS/scope',
         'JS/arrayMethods',
         'JS/runtime',
         'JS/promise'
