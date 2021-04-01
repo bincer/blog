@@ -15,13 +15,13 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## 基本类型与引用类型的区别
 **基本类型**：
-1. 占用空间固定，保存在栈中（当一个方法执行时，每个方法都会建立自己的内存栈，在这个方法内定义的变量将会逐个放入这块栈内存里，随着方法的执行结束，这个方法的内存栈也将自然销毁了。因此，所有在方法中定义的变量都是放在栈内存中的；栈中存储的是基础变量以及一些对象的引用变量，基础变量的值是存储在栈中，而引用变量存储在栈中的是指向堆中的数组或者对象的地址，这就是为何修改引用类型总会影响到其他指向这个地址的引用变量。）
+1. 占用空间固定，保存在栈中
 2. 保存与复制的是值本身
 3. 使用typeof检测数据的类型
 4. 基本类型数据是值类型
 
 **引用类型**：
-1. 占用空间不固定，保存在堆中（当我们在程序中创建一个对象时，这个对象将被保存到运行时数据区中，以便反复利用（因为对象的创建成本通常较大），这个运行时数据区就是堆内存。堆内存中的对象不会随方法的结束而销毁，即使方法结束后，这个对象还可能被另一个引用变量所引用（方法的参数传递时很常见），则这个对象依然不会被销毁，只有当一个对象没有任何引用变量引用它时，系统的垃圾回收机制才会在核实的时候回收它。）
+1. 占用空间不固定，保存在堆中
 2. 保存与复制的是指向对象的一个指针
 3. 使用instanceof检测数据类型
 4. 使用new()方法构造出的对象是引用型
@@ -63,7 +63,7 @@ console.log(pattern instanceof RegExp); // 变量 pattern 是 RegExp 吗？
   ```javascript
   var person = new Object(); 
   person.name = "Nicholas"; 
-  alert(person.name); //"Nicholas"
+  alert(person.name); // "Nicholas"
   ```
 2. **复制变量值**： 如果从一个变量向另一个变量复制基本类型值，会在变量对象上创建一个新值，然后把该值复制到为新变量分配的位置上。
   ```javascript
@@ -77,7 +77,7 @@ console.log(pattern instanceof RegExp); // 变量 pattern 是 RegExp 吗？
   var obj1 = new Object(); 
   var obj2 = obj1; 
   obj1.name = "Nicholas"; 
-  alert(obj2.name); //"Nicholas" 
+  alert(obj2.name); // "Nicholas" 
   ```
 
   首先，变量 obj1 保存了一个对象的新实例。然后，这个值被复制到了 obj2 中；换句话说，obj1和 obj2 都指向同一个对象。这样，当为 obj1 添加 name 属性后，可以通过 obj2 来访问这个属性，因为这两个变量引用的都是同一个对象。
@@ -91,8 +91,8 @@ console.log(pattern instanceof RegExp); // 变量 pattern 是 RegExp 吗？
 
   var count = 20; 
   var result = addTen(count); 
-  alert(count); //20，没有变化
-  alert(result); //30
+  alert(count); // 20，没有变化
+  alert(result); // 30
   ```
   在函数内部，参数 num 的值被加上了 10，但这一变化不会影响函数外部的 count 变量。参数num 与变量 count 互不相识，它们仅仅是具有相同的值。
 
@@ -102,7 +102,7 @@ console.log(pattern instanceof RegExp); // 变量 pattern 是 RegExp 吗？
   } 
   var person = new Object(); 
   setName(person); 
-  alert(person.name); //"Nicholas" 
+  alert(person.name); // "Nicholas" 
   ```
 
   为了证明对象是按值传递的，我们再看一看下面这个经过修改的例子：
@@ -114,7 +114,7 @@ console.log(pattern instanceof RegExp); // 变量 pattern 是 RegExp 吗？
   } 
   var person = new Object(); 
   setName(person); 
-  alert(person.name); //"Nicholas" 
+  alert(person.name); // "Nicholas" 
   ```
 
   如果 person 是按引用传递的，那么 person 就会自动被修改为指向其 name 属性值为"Greg"的新对象。但是，当接下来再访问 person.name 时，显示的值仍然是"Nicholas"。

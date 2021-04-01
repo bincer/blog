@@ -8,6 +8,7 @@ module.exports = {
         'JS/primitive',
         'JS/typeChange',
         'JS/scope',
+        'JS/closure',
         'JS/arrayMethods',
         'JS/runtime',
         'JS/promise'
