@@ -58,6 +58,8 @@ console.log(colors instanceof Array);  // 变量 colors 是 Array 吗？
 console.log(pattern instanceof RegExp); // 变量 pattern 是 RegExp 吗？
 ```
 
+如果我们想获得一个变量的正确类型，可以通过 `Object.prototype.toString.call(xx)` ，这样我们就可以获得类似 `[object Type]` 的字符串。
+
 **几方面的区别举例**：
 1. **动态的属性**： 定义基本类型值和引用类型值的方式是类似的。但是，当这个值保存到变量中以后，对不同类型值可以执行的操作则大相径庭。对于引用类型的值，我们可以为其添加属性和方法，也可以改变和删除其属性和方法，但是，我们不能给基本类型的值添加属性，只能给引用类型值动态地添加属性，以便将来使用。例如：
   ```javascript
