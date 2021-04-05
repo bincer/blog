@@ -38,6 +38,11 @@ module.exports = {
       type: 'category',
       label: 'Algorithm',
       items: ['Algorithm/links'],
+    },
+    {
+      type: 'category',
+      label: 'LeeCode',
+      items: ['LeeCode/mostElements'],
     }
   ]
 };
