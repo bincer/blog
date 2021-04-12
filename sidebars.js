@@ -32,7 +32,7 @@ module.exports = {
     {
       type: 'category',
       label: 'HTTP',
-      items: [],
+      items: ['HTTP/accessControl'],
     },
     {
       type: 'category',
